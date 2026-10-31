@@ -20,16 +20,23 @@ class ShopController extends Controller
             'description' => 'required|string',
             'amount' => 'required|integer',
             'price' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+
+        $imageName = 'test';
+        if ($request->hasFile('image')) {
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path('images'), $imageName);
+        }
 
         ProductModel::create([
             'name' => $request['name'],
             'description' => $request['description'],
             'amount' => $request['amount'],
             'price' => $request['price'],
-            'image' => $request['image'],
+            'image' => $imageName,
         ]);
-        return redirect('/admin//all-products')->with('success', 'Product added successfully!');
+        return redirect('/admin/all-products')->with('success', 'Product added successfully!');
     }
 }
