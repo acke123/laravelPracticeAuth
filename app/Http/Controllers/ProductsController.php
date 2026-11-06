@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditProductRequest;
 use App\Models\ProductModel;
 use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
@@ -21,22 +22,18 @@ class ProductsController extends Controller
         return view('allProducts', compact('allProducts'));
     }
 
-    public function deleteProduct($product)
+    public function deleteProduct(ProductModel $product)
     {
-        $singleProduct = $this->productRepository->deleteProduct($product);
-        if (is_null($singleProduct)) {
-            return redirect()->back();
-        }
-        $singleProduct->delete();
+        $product->delete();
         return redirect()->back();
     }
 
-    public function singleProduct(Request $request, ProductModel $product)
+    public function singleProduct(ProductModel $product)
     {
         return view('products/edit', compact('product'));
     }
 
-    public function updateProduct(Request $request, ProductModel $product)
+    public function updateProduct(EditProductRequest $request, ProductModel $product)
     {
         $this->productRepository->updateProduct($product, $request);
         return redirect('/admin/all-products');

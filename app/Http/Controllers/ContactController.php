@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SendContactRequest;
 use App\Models\ContactModel;
 use Illuminate\Http\Request;
 
@@ -18,14 +19,8 @@ class ContactController extends Controller
         return view('allContacts', compact('allContacts'));
     }
 
-    public function sendContact(Request $request)
+    public function sendContact(SendContactRequest $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'subject' => 'required|string',
-            'description' => 'required|string|min:7',
-        ]);
-
         ContactModel::create([
            'email' => $request['email'],
            'subject' => $request['subject'],
@@ -35,9 +30,8 @@ class ContactController extends Controller
         return redirect('/shop');
     }
 
-    public function deleteContact($contactId)
+    public function deleteContact(ContactModel $contact)
     {
-        $contact = ContactModel::where('id', $contactId)->first();
         $contact->delete();
         return redirect()->back();
     }

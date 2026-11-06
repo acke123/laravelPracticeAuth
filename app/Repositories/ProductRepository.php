@@ -25,11 +25,6 @@ class ProductRepository
             ]);
     }
 
-    public function deleteProduct($id)
-    {
-        return $this->productModel::where('id', $id)->first();
-    }
-
     public function updateProduct($product, $request)
     {
         $product->name = $request->input('name');
