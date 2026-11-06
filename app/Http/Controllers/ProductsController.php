@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductModel;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+    private $productRepository;
+
+    public function __construct()
+    {
+        $this->productRepository = new ProductRepository();
+    }
+
     public function index()
     {
         $allProducts = ProductModel::all();
@@ -15,8 +23,10 @@ class ProductsController extends Controller
 
     public function deleteProduct($product)
     {
-        $singleProduct = ProductModel::where('id', $product)->first();
-
+        $singleProduct = $this->productRepository->deleteProduct($product);
+        if (is_null($singleProduct)) {
+            return redirect()->back();
+        }
         $singleProduct->delete();
         return redirect()->back();
     }
@@ -28,11 +38,7 @@ class ProductsController extends Controller
 
     public function updateProduct(Request $request, ProductModel $product)
     {
-        $product->name = $request->input('name');
-        $product->description = $request->input('description');
-        $product->amount = $request->input('amount');
-        $product->price = $request->input('price');
-        $product->save();
+        $this->productRepository->updateProduct($product, $request);
         return redirect('/admin/all-products');
     }
 }
