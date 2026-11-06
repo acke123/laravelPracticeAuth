@@ -16,19 +16,24 @@ Route::view("/contact","contact");
 
 
 Route::middleware(["auth", AdminCheckMiddleware::class])->prefix('admin')->group(function () {
-    Route::get('/all-contact', [ContactController::class, 'getAllContact']);
-    Route::get('/delete-contact/{contact}',[ContactController::class, 'deleteContact'])->name('deleteContact');
+    Route::controller(ContactController::class)->group(function () {
+        Route::get('/all-contact', 'getAllContact')->name('allContact');
+        Route::get('/delete-contact/{contact}', 'deleteContact')->name('deleteContact');
+        Route::post('/send-contact', 'sendContact');
+    });
 
-    Route::post('/send-contact', [ContactController::class, 'sendContact']);
+    Route::controller(ProductsController::class)->group(function () {
+        Route::get('/all-products', 'index');
+        Route::get('delete-product/{product}', 'deleteProduct')->name('deleteProduct');
+        Route::post('/product/edit/{product}', 'singleProduct')->name('singleProduct');
+        Route::get('/product/update/{product}', 'updateProduct')->name('updateProduct');
+    });
 
+    Route::controller(ShopController::class)->group(function () {
+       Route::get('/products', 'index');
+        Route::post('/productStore', 'storeProduct')->name('storeProduct');
+    });
     Route::view("/add-product", "product");
-    Route::get('/products', [ShopController::class, 'index']);
-    Route::post("/productStore", [ShopController::class, 'storeProduct'])->name('storeProduct');
-
-    Route::get('/all-products', [ProductsController::class, 'index']);
-    Route::get('/delete-product/{product}',[ProductsController::class, 'deleteProduct'])->name('deleteProduct');
-    Route::get('/product/edit/{product}',[ProductsController::class, 'singleProduct'])->name('singleProduct');
-    Route::post('/product/update/{product}',[ProductsController::class, 'updateProduct'])->name('updateProduct');
 });
 
 Route::get('/dashboard', function () {
