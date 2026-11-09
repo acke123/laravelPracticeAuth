@@ -13,7 +13,6 @@ class ShoppingCarController extends Controller
 {
     public function index()
     {
-        //Session::forget('product');
         $cart = Session::get('product');
         if (count($cart) < 0) {
             return redirect('/');
