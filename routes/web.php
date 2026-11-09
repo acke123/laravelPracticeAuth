@@ -17,6 +17,8 @@ Route::view("/contact","contact");
 
 Route::post('/cart/add', [ShoppingCarController::class, 'addToCart'])->name('cartAdd');
 Route::get('/shoppingCart', [ShoppingCarController::class, 'index'])->name('cartIndex');
+Route::get('/cart/finish', [ShoppingCarController::class, 'finishOrder'])->name('cartFinish');
+Route::view('/thankYou','thankYou');
 
 Route::middleware(["auth", AdminCheckMiddleware::class])->prefix('admin')->group(function () {
     Route::controller(ContactController::class)->group(function () {
