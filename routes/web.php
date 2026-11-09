@@ -5,6 +5,7 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShoppingCarController;
 use App\Http\Middleware\AdminCheckMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,8 @@ Route::get('/shop', [ShopController::class, 'index']);
 Route::view("/about","about");
 Route::view("/contact","contact");
 
+Route::post('/cart/add', [ShoppingCarController::class, 'addToCart'])->name('cartAdd');
+Route::get('/shoppingCart', [ShoppingCarController::class, 'index'])->name('cartIndex');
 
 Route::middleware(["auth", AdminCheckMiddleware::class])->prefix('admin')->group(function () {
     Route::controller(ContactController::class)->group(function () {
@@ -27,6 +30,7 @@ Route::middleware(["auth", AdminCheckMiddleware::class])->prefix('admin')->group
         Route::get('delete-product/{product}', 'deleteProduct')->name('deleteProduct');
         Route::post('/product/edit/{product}', 'singleProduct')->name('singleProduct');
         Route::get('/product/update/{product}', 'updateProduct')->name('updateProduct');
+        Route::get('/products/{product}','permaLink')->name('products.permaLink');
     });
 
     Route::controller(ShopController::class)->group(function () {

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveProductRequest;
 use App\Models\ProductModel;
 use App\Repositories\ProductRepository;
-use Illuminate\Http\Request;
 
 class ShopController extends Controller
 {

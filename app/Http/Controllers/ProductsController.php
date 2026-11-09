@@ -38,4 +38,9 @@ class ProductsController extends Controller
         $this->productRepository->updateProduct($product, $request);
         return redirect('/admin/all-products');
     }
+
+    public function permaLink(ProductModel $product)
+    {
+        return view('products.permalink', compact('product'));
+    }
 }
