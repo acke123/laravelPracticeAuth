@@ -17,7 +17,7 @@ class ShoppingCarController extends Controller
 
     public function addToCart(CartAddRequest $request)
     {
-        Session::put('product' , [
+        Session::push('product' , [
             $request->id => $request->amount
         ]);
 
